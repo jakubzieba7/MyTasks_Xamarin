@@ -8,12 +8,12 @@ namespace MyTasks_Xamarin
 {
     public partial class App : Application
     {
-
+        public static string BackendUrl = "";
         public App()
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<TaskService>();
             MainPage = new AppShell();
         }
 

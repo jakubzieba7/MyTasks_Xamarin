@@ -10,7 +10,7 @@ namespace MyTasks_Xamarin.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public ITaskService<Item> DataStore => DependencyService.Get<ITaskService<Item>>();
 
         bool isBusy = false;
         public bool IsBusy
