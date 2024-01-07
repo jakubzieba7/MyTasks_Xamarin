@@ -1,7 +1,5 @@
-﻿using MyTasks_Xamarin.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels

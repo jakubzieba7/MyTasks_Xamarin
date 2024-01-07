@@ -4,7 +4,7 @@
              x:Class="MyTasks_Xamarin.Views.ItemsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:MyTasks_Xamarin.ViewModels"  
-             xmlns:model="clr-namespace:MyTasks_Xamarin.Models"  
+             xmlns:model="clr-namespace:MyTasks_WebAPI.Core.DTOs;assembly=MyTasks_WebAPI.Core"  
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
@@ -15,30 +15,76 @@
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
     <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        <CollectionView x:Name="ItemsListView"
-                ItemsSource="{Binding Items}"
-                SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Item">
-                        <Label Text="{Binding Text}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
-                        <Label Text="{Binding Description}" 
-                            LineBreakMode="NoWrap"
-                            Style="{DynamicResource ListItemDetailTextStyle}"
-                            FontSize="13" />
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
-                                CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <CollectionView x:Name="ItemsListView"
+                          ItemsSource="{Binding Operations}"
+                          SelectionMode="None"
+                          Grid.ColumnSpan="2">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10" x:DataType="model:TaskDto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Padding="10">
+
+                                <Label   Text="{Binding Title}" 
+                                     LineBreakMode="NoWrap" 
+                                     Style="{DynamicResource ListItemTextStyle}" 
+                                     FontSize="16" />
+
+                                <Label   Text="{Binding Description}" 
+                                     LineBreakMode="NoWrap"
+                                     Style="{DynamicResource ListItemDetailTextStyle}"
+                                     FontSize="13" />
+
+                                <Label   Text="{Binding CategoryId}" 
+                                     LineBreakMode="NoWrap"
+                                     Style="{DynamicResource ListItemDetailTextStyle}"
+                                     FontSize="13" />
+
+                                <Label   Text="{Binding Term, StringFormat='{0:dd-MM-yyyy}'}" 
+                                     LineBreakMode="NoWrap"
+                                     Style="{DynamicResource ListItemDetailTextStyle}"
+                                     FontSize="13" />
+
+                            </StackLayout>
+
+                            <Button  Grid.Column="1"
+                                 WidthRequest="70"
+                                 HeightRequest="35"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Text="Usuń"
+                                 FontSize="10"
+                                 BackgroundColor="OrangeRed"
+                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DeleteItemCommand}"
+                                 CommandParameter="{Binding .}"/>
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer  NumberOfTapsRequired="1"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
+                                                       CommandParameter="{Binding .}">
+                                </TapGestureRecognizer>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            
+        </Grid>
     </RefreshView>
 </ContentPage>

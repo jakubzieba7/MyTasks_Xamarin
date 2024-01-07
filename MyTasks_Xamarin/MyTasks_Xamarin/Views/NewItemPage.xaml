@@ -4,18 +4,32 @@
              x:Class="MyTasks_Xamarin.Views.NewItemPage"
              Shell.PresentationMode="ModalAnimated"
              Title="New Item"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:viewmodels="clr-namespace:MyTasks_Xamarin.ViewModels" x:DataType="viewmodels:NewItemViewModel"
              ios:Page.UseSafeArea="true">
     <ContentPage.Content>
         <StackLayout Spacing="3" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding Text, Mode=TwoWay}" FontSize="Medium" />
-            <Label Text="Description" FontSize="Medium" />
+
+            <Label Text="Nazwa" FontSize="Medium" />
+            <Entry Text="{Binding Title, Mode=TwoWay}" FontSize="Medium" />
+
+            <Label Text="Opis" FontSize="Medium" />
             <Editor Text="{Binding Description, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
+
+            <Label Text="Termin wykonania" FontSize="Medium" />
+            <DatePicker Format="dd-MM-yyyy" Date="{Binding CreatedDate, Mode=TwoWay}" FontSize="Medium" />
+
+            <Label Text="Kategoria" FontSize="Medium" />
+            <Picker Title="-- wybierz kategorię --" 
+                    ItemsSource="{Binding Categories}" 
+                    ItemDisplayBinding="{Binding Title}"
+                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                    FontSize="Medium" />
+
             <StackLayout Orientation="Horizontal">
-                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
-                <Button Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+                <Button Text="Wyjdź" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+                <Button Text="Zapisz" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
             </StackLayout>
+
         </StackLayout>
     </ContentPage.Content>
     
