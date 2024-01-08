@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Tydz11_cw2_MyTasks_WebAPI\MyTasks_WebAPI.Core\MyTasks_WebAPI.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -1,8 +1,7 @@
-﻿using MyTasks_Xamarin.Models;
+﻿using MyTasks_WebAPI.Core.DTOs;
 using MyTasks_Xamarin.Views;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -10,22 +9,40 @@ namespace MyTasks_Xamarin.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        private Item _selectedItem;
-
-        public ObservableCollection<Item> Items { get; }
+        public ObservableCollection<TaskDto> Tasks { get; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public Command DeleteItemCommand { get; }
+        public Command<TaskDto> ItemTapped { get; }
 
         public ItemsViewModel()
         {
-            Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            Title = "Zadania do wykonania";
+            Tasks = new ObservableCollection<TaskDto>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            ItemTapped = new Command<TaskDto>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
+            DeleteItemCommand = new Command<TaskDto>(async (x) => await OnDeleteItem(x));
+        }
+
+        private async Task OnDeleteItem(TaskDto task)
+        {
+            if (task == null)
+                return;
+
+            var dialog = await Shell.Current.DisplayAlert("Usuwanie!", $"Czy na pewno chcesz usunąć operację {task.Title}?", "Tak", "Nie");
+
+            if (!dialog)
+                return;
+
+            var response = await TaskService.DeleteTaskAsync(task.Id);
+
+            if (!response.IsSuccess)
+                await ShowErrorAlert(response);
+
+            await ExecuteLoadItemsCommand();
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -34,16 +51,21 @@ namespace MyTasks_Xamarin.ViewModels
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
+                var response = await TaskService.GetTasksAsync();
+
+                if (!response.IsSuccess)
+                    await ShowErrorAlert(response);
+
+                Tasks.Clear();
+
+                foreach (var item in response.Data)
                 {
-                    Items.Add(item);
+                    Tasks.Add(item);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                await Shell.Current.DisplayAlert("Wystąpił Błąd!", ex.Message, "Ok");
             }
             finally
             {
@@ -54,17 +76,6 @@ namespace MyTasks_Xamarin.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
-            SelectedItem = null;
-        }
-
-        public Item SelectedItem
-        {
-            get => _selectedItem;
-            set
-            {
-                SetProperty(ref _selectedItem, value);
-                OnItemSelected(value);
-            }
         }
 
         private async void OnAddItem(object obj)
@@ -72,13 +83,13 @@ namespace MyTasks_Xamarin.ViewModels
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(TaskDto task)
         {
-            if (item == null)
+            if (task == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={task.Id}");
         }
     }
 }

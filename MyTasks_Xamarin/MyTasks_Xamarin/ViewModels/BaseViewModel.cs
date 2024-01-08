@@ -1,16 +1,18 @@
-﻿using MyTasks_Xamarin.Models;
+﻿using MyTasks_WebAPI.Core.Response;
 using MyTasks_Xamarin.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public ITaskService<Item> DataStore => DependencyService.Get<ITaskService<Item>>();
+        public ITaskService TaskService => DependencyService.Get<ITaskService>();
 
         bool isBusy = false;
         public bool IsBusy
@@ -37,6 +39,11 @@ namespace MyTasks_Xamarin.ViewModels
             onChanged?.Invoke();
             OnPropertyChanged(propertyName);
             return true;
+        }
+
+        protected async Task ShowErrorAlert(Response response)
+        {
+            await Shell.Current.DisplayAlert("Wystąpił Błąd!", string.Join(". ", response.Errors.Select(x => x.Message)), "Ok");
         }
 
         #region INotifyPropertyChanged

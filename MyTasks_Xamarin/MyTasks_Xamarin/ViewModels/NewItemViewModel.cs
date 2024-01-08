@@ -1,19 +1,23 @@
-﻿using MyTasks_Xamarin.Models;
+﻿using MyTasks_WebAPI.Core.DTOs;
+using MyTasks_Xamarin.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels
 {
     public class NewItemViewModel : BaseViewModel
     {
-        private string text;
-        private string description;
+        private string _name;
+        private string _description;
+        private DateTime _term;
+        private LookupItem _selectedCategory;
+        private IEnumerable<LookupItem> _categories;
 
         public NewItemViewModel()
         {
+            Term = DateTime.Now;
+            Categories = new List<LookupItem>();
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             this.PropertyChanged +=
@@ -22,20 +26,39 @@ namespace MyTasks_Xamarin.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(text)
-                && !String.IsNullOrWhiteSpace(description);
+            return !String.IsNullOrWhiteSpace(Name)
+                && !String.IsNullOrWhiteSpace(Description)
+                && SelectedCategory != null;
         }
 
-        public string Text
+        public string Name
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         public string Description
         {
-            get => description;
-            set => SetProperty(ref description, value);
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        public DateTime Term
+        {
+            get => _term;
+            set => SetProperty(ref _term, value);
+        }
+
+        public LookupItem SelectedCategory
+        {
+            get => _selectedCategory;
+            set => SetProperty(ref _selectedCategory, value);
+        }
+
+        public IEnumerable<LookupItem> Categories
+        {
+            get => _categories;
+            set => SetProperty(ref _categories, value);
         }
 
         public Command SaveCommand { get; }
@@ -49,14 +72,18 @@ namespace MyTasks_Xamarin.ViewModels
 
         private async void OnSave()
         {
-            Item newItem = new Item()
+            var task = new TaskDto()
             {
-                Id = Guid.NewGuid().ToString(),
-                Text = Text,
-                Description = Description
+                Title = Title,
+                CategoryId = SelectedCategory.Id,
+                Description = Description,
+                Term = DateTime.Now,
             };
 
-            await DataStore.AddItemAsync(newItem);
+            var response = await TaskService.AddTaskAsync(task);
+
+            if (!response.IsSuccess)
+                await ShowErrorAlert(response);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

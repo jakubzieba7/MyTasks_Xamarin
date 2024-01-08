@@ -1,5 +1,9 @@
-﻿using System;
+﻿using MyTasks_WebAPI.Core.DTOs;
+using MyTasks_WebAPI.Core.Response;
+using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels
@@ -8,20 +12,16 @@ namespace MyTasks_Xamarin.ViewModels
     public class ItemDetailViewModel : BaseViewModel
     {
         private string itemId;
-        private string text;
-        private string description;
-        public string Id { get; set; }
+        private TaskDto _taskDto;
 
-        public string Text
+        public ItemDetailViewModel()
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            Title = "Podgląd zadań";
         }
-
-        public string Description
+        public TaskDto TaskDto
         {
-            get => description;
-            set => SetProperty(ref description, value);
+            get => _taskDto;
+            set => SetProperty(ref _taskDto, value);
         }
 
         public string ItemId
@@ -33,23 +33,18 @@ namespace MyTasks_Xamarin.ViewModels
             set
             {
                 itemId = value;
-                LoadItemId(value);
+                LoadItemId(int.Parse(value));
             }
         }
 
-        public async void LoadItemId(string itemId)
+        public async void LoadItemId(int itemId)
         {
-            try
-            {
-                var item = await DataStore.GetItemAsync(itemId);
-                Id = item.Id;
-                Text = item.Text;
-                Description = item.Description;
-            }
-            catch (Exception)
-            {
-                Debug.WriteLine("Failed to Load Item");
-            }
+            var response = await TaskService.GetTaskAsync(itemId);
+
+            if (!response.IsSuccess)
+                await ShowErrorAlert(response);
+
+            TaskDto = response.Data;
         }
     }
 }
