@@ -1,8 +1,8 @@
-﻿using MyTasks_Xamarin.Models.Domains;
+﻿using MyTasks_WebAPI.Core;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace MyTasks_Xamarin.Models
 {
@@ -15,24 +15,37 @@ namespace MyTasks_Xamarin.Models
             _context = connection;
         }
 
-        public Task<int> AddTaskAsync(Task task)
+        public async Task<int> AddTaskAsync(Domains.Task task)
         {
-            throw new NotImplementedException();
+            return await _context.InsertAsync(task);
         }
 
-        public Task DeleteTaskAsync(Task task)
+        public async Task DeleteTaskAsync(Domains.Task task)
         {
-            throw new NotImplementedException();
+            await _context.DeleteAsync(task);
         }
 
-        public Task GetTaskAsync(int id)
+        public async Task<Domains.Task> GetTaskAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Table<Domains.Task>().FirstAsync(x => x.Id == id);
         }
 
-        public Task UpdateTaskAsync(Task task)
+        public async Task<IEnumerable<Domains.Task>> GetTasksAsync(PaginationFilter paginationFilter)
         {
-            throw new NotImplementedException();
+            return await _context.Table<Domains.Task>()
+                                 .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
+                                 .Take(paginationFilter.PageSize)
+                                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Domains.Task>> GetTasksAsync()
+        {
+            return await _context.Table<Domains.Task>().ToListAsync();
+        }
+
+        public async Task UpdateTaskAsync(Domains.Task task)
+        {
+            await _context.UpdateAsync(task);
         }
     }
 }

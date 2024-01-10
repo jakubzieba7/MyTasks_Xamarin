@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Task = MyTasks_Xamarin.Models.Domains.Task;
 
 namespace MyTasks_Xamarin.Services
 {
@@ -27,7 +28,7 @@ namespace MyTasks_Xamarin.Services
                 return _unitOfWork;
             }
         }
-        public async Task<DataResponse<int>> ITaskService.AddTaskAsync(TaskDto task)
+        public async Task<DataResponse<int>> AddTaskAsync(TaskDto task)
         {
             var response = new DataResponse<int>();
 
@@ -43,13 +44,13 @@ namespace MyTasks_Xamarin.Services
             return response;
         }
 
-        public async Task<Response> ITaskService.DeleteTaskAsync(int id)
+        public async Task<Response> DeleteTaskAsync(int id)
         {
             var response = new Response();
 
             try
             {
-                await UnitOfWork.TaskRepository.DeleteTaskAsync(new Models.Domains.Task { Id = id });
+                await UnitOfWork.TaskRepository.DeleteTaskAsync(new Task { Id = id });
             }
             catch (Exception exception)
             {
@@ -59,7 +60,7 @@ namespace MyTasks_Xamarin.Services
             return response;
         }
 
-        public async Task<DataResponse<TaskDto>> ITaskService.GetTaskAsync(int id)
+        public async Task<DataResponse<TaskDto>> GetTaskAsync(int id)
         {
             var response = new DataResponse<TaskDto>();
 
@@ -75,7 +76,7 @@ namespace MyTasks_Xamarin.Services
             return response;
         }
 
-        public async Task<DataResponse<IEnumerable<TaskDto>>> ITaskService.GetTasksAsync()
+        public async Task<DataResponse<IEnumerable<TaskDto>>> GetTasksAsync()
         {
             var response = new DataResponse<IEnumerable<TaskDto>>();
 
@@ -91,7 +92,7 @@ namespace MyTasks_Xamarin.Services
             return response;
         }
 
-        public async Task<DataResponse<IEnumerable<TaskDto>>> ITaskService.GetTasksAsync(PaginationFilter paginationFilter)
+        public async Task<DataResponse<IEnumerable<TaskDto>>> GetTasksAsync(PaginationFilter paginationFilter)
         {
             var response = new DataResponse<IEnumerable<TaskDto>>();
 
@@ -107,7 +108,7 @@ namespace MyTasks_Xamarin.Services
             return response;
         }
 
-        public async Task<Response> ITaskService.UpdateTaskAsync(TaskDto task)
+        public async Task<Response> UpdateTaskAsync(TaskDto task)
         {
             var response = new Response();
 

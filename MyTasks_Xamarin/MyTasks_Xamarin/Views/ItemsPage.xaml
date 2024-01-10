@@ -4,7 +4,7 @@
              x:Class="MyTasks_Xamarin.Views.ItemsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:MyTasks_Xamarin.ViewModels"  
-             xmlns:model="clr-namespace:MyTasks_WebAPI.Core.DTOs;assembly=MyTasks_WebAPI.Core"  
+             xmlns:model="clr-namespace:MyTasks_WebAPI.Core.DTOs;assembly=MyTasks_WebAPI.Core" x:DataType="local:ItemsViewModel"
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
@@ -27,7 +27,7 @@
             </Grid.ColumnDefinitions>
 
             <CollectionView x:Name="ItemsListView"
-                          ItemsSource="{Binding Operations}"
+                          ItemsSource="{Binding Tasks}"
                           SelectionMode="None"
                           Grid.ColumnSpan="2">
                 <CollectionView.ItemTemplate>

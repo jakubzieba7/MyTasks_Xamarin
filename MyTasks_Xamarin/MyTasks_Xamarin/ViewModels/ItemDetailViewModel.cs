@@ -18,7 +18,7 @@ namespace MyTasks_Xamarin.ViewModels
         {
             Title = "Podgląd zadań";
         }
-        public TaskDto TaskDto
+        public TaskDto Task
         {
             get => _taskDto;
             set => SetProperty(ref _taskDto, value);
@@ -44,7 +44,7 @@ namespace MyTasks_Xamarin.ViewModels
             if (!response.IsSuccess)
                 await ShowErrorAlert(response);
 
-            TaskDto = response.Data;
+            Task = response.Data;
         }
     }
 }

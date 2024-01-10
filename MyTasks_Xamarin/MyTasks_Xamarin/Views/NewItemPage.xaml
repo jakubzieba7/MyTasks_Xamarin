@@ -16,7 +16,7 @@
             <Editor Text="{Binding Description, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
 
             <Label Text="Termin wykonania" FontSize="Medium" />
-            <DatePicker Format="dd-MM-yyyy" Date="{Binding CreatedDate, Mode=TwoWay}" FontSize="Medium" />
+            <DatePicker Format="dd-MM-yyyy" Date="{Binding Term, Mode=TwoWay}" FontSize="Medium" />
 
             <Label Text="Kategoria" FontSize="Medium" />
             <Picker Title="-- wybierz kategorię --" 

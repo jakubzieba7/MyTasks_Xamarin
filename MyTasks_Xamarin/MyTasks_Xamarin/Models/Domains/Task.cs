@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.ComponentModel.DataAnnotations;
 using MaxLengthAttribute = SQLite.MaxLengthAttribute;
 
@@ -6,6 +7,7 @@ namespace MyTasks_Xamarin.Models.Domains
 {
     public class Task
     {
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         [MaxLength(50)]
         [Required(ErrorMessage = "Pole tytuł jest wymagane.")]
