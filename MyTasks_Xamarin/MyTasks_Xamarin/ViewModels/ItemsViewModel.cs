@@ -1,4 +1,5 @@
-﻿using MyTasks_WebAPI.Core.DTOs;
+﻿using MyTasks_WebAPI.Core;
+using MyTasks_WebAPI.Core.DTOs;
 using MyTasks_Xamarin.Views;
 using System;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ namespace MyTasks_Xamarin.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
+        PaginationFilter paginationFilter = new PaginationFilter();
         public ObservableCollection<TaskDto> Tasks { get; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
@@ -51,7 +53,7 @@ namespace MyTasks_Xamarin.ViewModels
 
             try
             {
-                var response = await TaskService.GetTasksAsync();
+                var response = await TaskService.GetTasksAsync(paginationFilter);
 
                 if (!response.IsSuccess)
                     await ShowErrorAlert(response);
