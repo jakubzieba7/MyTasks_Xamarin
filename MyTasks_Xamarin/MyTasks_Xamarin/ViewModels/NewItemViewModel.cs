@@ -17,7 +17,7 @@ namespace MyTasks_Xamarin.ViewModels
         public NewItemViewModel()
         {
             Term = DateTime.Now;
-            Categories = new List<LookupItem>();
+            Categories = new List<LookupItem>() { new LookupItem { Id = 1, Name = "Domyślna" } };
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             this.PropertyChanged +=
