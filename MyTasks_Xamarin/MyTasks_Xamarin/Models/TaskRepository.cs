@@ -47,5 +47,9 @@ namespace MyTasks_Xamarin.Models
         {
             await _context.UpdateAsync(task);
         }
+        public async Task<int> TaskCount()
+        {
+            return await _context.Table<Domains.Task>().CountAsync();
+        }
     }
 }
