@@ -24,12 +24,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <CollectionView x:Name="ItemsListView"
                           ItemsSource="{Binding Tasks}"
                           SelectionMode="None"
-                          Grid.ColumnSpan="2">
+                          Grid.ColumnSpan="4">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10" x:DataType="model:TaskDto">
@@ -83,8 +85,33 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <Button Margin="5" 
+                    FontSize="10" 
+                    Grid.Row="1" 
+                    Text="&lt;&lt;" 
+                    Command="{Binding FirstPageCommand}"/>
 
-            
+            <Button Margin="5" 
+                    FontSize="10" 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Poprzednia" 
+                    Command="{Binding PreviousPageCommand}"/>
+
+            <Button Margin="5" 
+                    FontSize="10" 
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="Następna" 
+                    Command="{Binding NextPageCommand}"/>
+
+            <Button Margin="5" 
+                    FontSize="10" 
+                    Grid.Row="1" 
+                    Grid.Column="3"
+                    Text=">>" 
+                    Command="{Binding LastPageCommand}"/>
+
         </Grid>
     </RefreshView>
 </ContentPage>

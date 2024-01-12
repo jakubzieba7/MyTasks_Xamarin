@@ -4,6 +4,7 @@ using MyTasks_Xamarin.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels
@@ -92,6 +93,82 @@ namespace MyTasks_Xamarin.ViewModels
 
             // This will push the ItemDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={task.Id}");
+        }
+
+        private Command firstPageCommand;
+
+        public ICommand FirstPageCommand
+        {
+            get
+            {
+                if (firstPageCommand == null)
+                {
+                    firstPageCommand = new Command(FirstPage);
+                }
+
+                return firstPageCommand;
+            }
+        }
+
+        private void FirstPage()
+        {
+        }
+
+        private Command previousPageCommand;
+
+        public ICommand PreviousPageCommand
+        {
+            get
+            {
+                if (previousPageCommand == null)
+                {
+                    previousPageCommand = new Command(PreviousPage);
+                }
+
+                return previousPageCommand;
+            }
+        }
+
+        private void PreviousPage()
+        {
+        }
+
+        private Command nextPageCommand;
+
+        public ICommand NextPageCommand
+        {
+            get
+            {
+                if (nextPageCommand == null)
+                {
+                    nextPageCommand = new Command(NextPage);
+                }
+
+                return nextPageCommand;
+            }
+        }
+
+        private void NextPage()
+        {
+        }
+
+        private Command lastPageCommand;
+
+        public ICommand LastPageCommand
+        {
+            get
+            {
+                if (lastPageCommand == null)
+                {
+                    lastPageCommand = new Command(LastPage);
+                }
+
+                return lastPageCommand;
+            }
+        }
+
+        private void LastPage()
+        {
         }
     }
 }
