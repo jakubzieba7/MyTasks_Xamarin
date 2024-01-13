@@ -1,4 +1,5 @@
 ﻿using MyTasks_Xamarin.Models.Domains;
+using MyTasks_Xamarin.Models.Repositories;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,12 @@ namespace MyTasks_Xamarin.Models
         {
             _context = new SQLiteAsyncConnection(dbPath);
             _context.CreateTableAsync<Task>().Wait();
+            _context.CreateTableAsync<Category>().Wait();
             TaskRepository = new TaskRepository(_context);
+            CategoryRepository = new CategoryRepository(_context);
         }
 
         public TaskRepository TaskRepository { get; set; }
+        public CategoryRepository CategoryRepository { get; set; }
     }
 }

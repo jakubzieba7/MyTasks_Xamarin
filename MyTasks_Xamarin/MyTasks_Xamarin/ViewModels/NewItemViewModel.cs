@@ -1,5 +1,6 @@
 ﻿using MyTasks_WebAPI.Core.DTOs;
 using MyTasks_Xamarin.Models;
+using MyTasks_Xamarin.Models.Domains;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -11,13 +12,12 @@ namespace MyTasks_Xamarin.ViewModels
         private string _name;
         private string _description;
         private DateTime _term;
-        private LookupItem _selectedCategory;
-        private IEnumerable<LookupItem> _categories;
+        private Category _selectedCategory;
+        private IEnumerable<Category> _categories = new List<Category>() { new Category { Id = 1, Name = "Domyślna" } };
 
         public NewItemViewModel()
         {
             Term = DateTime.Now;
-            Categories = new List<LookupItem>() { new LookupItem { Id = 1, Name = "Domyślna" } };
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             this.PropertyChanged +=
@@ -49,13 +49,13 @@ namespace MyTasks_Xamarin.ViewModels
             set => SetProperty(ref _term, value);
         }
 
-        public LookupItem SelectedCategory
+        public Category SelectedCategory
         {
             get => _selectedCategory;
             set => SetProperty(ref _selectedCategory, value);
         }
 
-        public IEnumerable<LookupItem> Categories
+        public IEnumerable<Category> Categories
         {
             get => _categories;
             set => SetProperty(ref _categories, value);

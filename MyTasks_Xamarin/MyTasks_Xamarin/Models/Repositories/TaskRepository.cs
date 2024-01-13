@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyTasks_Xamarin.Models
+namespace MyTasks_Xamarin.Models.Repositories
 {
     public class TaskRepository
     {
