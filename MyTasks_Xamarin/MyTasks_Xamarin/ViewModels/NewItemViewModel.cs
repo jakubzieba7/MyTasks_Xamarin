@@ -9,7 +9,7 @@ namespace MyTasks_Xamarin.ViewModels
 {
     public class NewItemViewModel : BaseViewModel
     {
-        private string _name;
+        private string _title;
         private string _description;
         private DateTime _term;
         private Category _selectedCategory;
@@ -26,15 +26,15 @@ namespace MyTasks_Xamarin.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(Name)
+            return !String.IsNullOrWhiteSpace(Title)
                 && !String.IsNullOrWhiteSpace(Description)
                 && SelectedCategory != null;
         }
 
-        public string Name
+        public string Title
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         public string Description
