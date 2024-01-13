@@ -28,12 +28,12 @@ namespace MyTasks_Xamarin.Models.Repositories
             return await _context.InsertAsync(category);
         }
 
-        public async System.Threading.Tasks.Task UpdateAsync(Category category)
+        public async System.Threading.Tasks.Task UpdateCategoryAsync(Category category)
         {
             await _context.UpdateAsync(category);
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(Category category)
+        public async System.Threading.Tasks.Task DeleteCategoryAsync(Category category)
         {
             await _context.DeleteAsync(category);
         }
