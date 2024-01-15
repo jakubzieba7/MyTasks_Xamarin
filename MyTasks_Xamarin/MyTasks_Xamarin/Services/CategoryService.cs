@@ -47,18 +47,18 @@ namespace MyTasks_Xamarin.Services
             }
         }
 
-        public async Task<DataResponse<TaskDto>> GetCategoryAsync(int id)
+        public async Task<DataResponse<CategoryDto>> GetCategoryAsync(int id)
         {
             var json = await _httpClient.GetStringAsync($"category/{id}");
 
-            return JsonConvert.DeserializeObject<DataResponse<TaskDto>>(json);
+            return JsonConvert.DeserializeObject<DataResponse<CategoryDto>>(json);
         }
 
-        public async Task<DataResponse<IEnumerable<TaskDto>>> GetCategoriesAsync()
+        public async Task<DataResponse<IEnumerable<CategoryDto>>> GetCategoriesAsync()
         {
             var json = await _httpClient.GetStringAsync("category/");
 
-            return JsonConvert.DeserializeObject<DataResponse<IEnumerable<TaskDto>>>(json);
+            return JsonConvert.DeserializeObject<DataResponse<IEnumerable<CategoryDto>>>(json);
         }
     }
 }

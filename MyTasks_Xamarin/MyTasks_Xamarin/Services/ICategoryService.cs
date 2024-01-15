@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace MyTasks_Xamarin.Services
 {
-    internal interface ICategoryService
+    public interface ICategoryService
     {
         Task<DataResponse<int>> AddCategoryAsync(CategoryDto category);
         Task<Response> UpdateCategoryAsync(CategoryDto category);
         Task<Response> DeleteCategoryAsync(int id);
-        Task<DataResponse<TaskDto>> GetCategoryAsync(int id);
-        Task<DataResponse<IEnumerable<TaskDto>>> GetCategoriesAsync();
+        Task<DataResponse<CategoryDto>> GetCategoryAsync(int id);
+        Task<DataResponse<IEnumerable<CategoryDto>>> GetCategoriesAsync();
     }
 }

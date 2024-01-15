@@ -13,6 +13,7 @@ namespace MyTasks_Xamarin.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public ITaskService TaskService => DependencyService.Get<ITaskService>();
+        public ICategoryService CategoryService => DependencyService.Get<ICategoryService>();
 
         bool isBusy = false;
         public bool IsBusy

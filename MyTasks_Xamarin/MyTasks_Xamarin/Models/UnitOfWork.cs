@@ -1,9 +1,6 @@
 ﻿using MyTasks_Xamarin.Models.Domains;
 using MyTasks_Xamarin.Models.Repositories;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyTasks_Xamarin.Models
 {
