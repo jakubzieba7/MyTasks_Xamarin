@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using MyTasks_Xamarin.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MyTasks_Xamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CategoryDetailPage : ViewCell
+    public partial class CategoryDetailPage : ContentPage
     {
         public CategoryDetailPage()
         {
             InitializeComponent();
+            BindingContext = new CategoryDetailViewModel();
         }
     }
 }

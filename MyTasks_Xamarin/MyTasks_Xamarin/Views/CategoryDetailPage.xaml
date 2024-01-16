@@ -1,10 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:MyTasks_Xamarin.ViewModels" x:DataType="viewmodels:CategoryDetailViewModel"
              x:Class="MyTasks_Xamarin.Views.CategoryDetailPage">
-  <ViewCell.View>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ViewCell.View>
-</ViewCell>
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Nazwa:" FontSize="Medium" />
+            <Label Text="{Binding Category.Name}" FontSize="Small"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

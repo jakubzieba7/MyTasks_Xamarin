@@ -1,10 +1,25 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MyTasks_Xamarin.Views.NewCategoryPage">
-  <ViewCell.View>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ViewCell.View>
-</ViewCell>
+             x:Class="MyTasks_Xamarin.Views.NewCategoryPage"
+             Shell.PresentationMode="ModalAnimated"
+            Title="Nowa konfiguracja"
+            xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:viewmodels="clr-namespace:MyTasks_Xamarin.ViewModels" 
+             x:DataType="viewmodels:NewCategoryViewModel"
+            ios:Page.UseSafeArea="true">
+
+    <ContentPage.Content>
+        <StackLayout Spacing="3" Padding="15">
+
+            <Label Text="Nazwa" FontSize="Medium" />
+            <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
+
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Wyjdź" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+                <Button Text="Zapisz" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

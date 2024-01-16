@@ -12,7 +12,7 @@ using MyTasks_Xamarin.Models.Converters;
 
 namespace MyTasks_Xamarin.Services
 {
-    public class CategorySqliteService
+    public class CategorySqliteService : ICategoryService
     {
         private static UnitOfWork _unitOfWork;
 

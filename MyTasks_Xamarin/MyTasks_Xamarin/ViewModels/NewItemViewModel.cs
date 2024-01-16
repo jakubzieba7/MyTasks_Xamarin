@@ -13,7 +13,7 @@ namespace MyTasks_Xamarin.ViewModels
         private string _description;
         private DateTime _term;
         private Category _selectedCategory;
-        private IEnumerable<Category> _categories = new List<Category>() { new Category { Id = 1, Name = "Domyślna" } };
+        private IEnumerable<Category> _categories;// = new List<Category>() { new Category { Id = 1, Name = "Domyślna" } };
 
         public NewItemViewModel()
         {
