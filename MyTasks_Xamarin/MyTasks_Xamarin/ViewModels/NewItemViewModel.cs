@@ -1,8 +1,11 @@
-﻿using MyTasks_WebAPI.Core.DTOs;
+﻿using MyTasks_WebAPI.Core;
+using MyTasks_WebAPI.Core.DTOs;
 using MyTasks_Xamarin.Models;
 using MyTasks_Xamarin.Models.Domains;
+using MyTasks_Xamarin.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels
@@ -13,15 +16,33 @@ namespace MyTasks_Xamarin.ViewModels
         private string _description;
         private DateTime _term;
         private Category _selectedCategory;
-        private IEnumerable<Category> _categories;// = new List<Category>() { new Category { Id = 1, Name = "Domyślna" } };
+        private IEnumerable<Category> _categories;
 
         public NewItemViewModel()
         {
+            _categories = CategoryList();
             Term = DateTime.Now;
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             this.PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
+        }
+
+        private async Task<IEnumerable<Category>> CategoryListAsync()
+        {
+            var categoriesList = await CategorySqliteService.UnitOfWork.CategoryRepository.GetCategoriesAsync();
+
+            return categoriesList;
+        }
+
+        private IEnumerable<Category> CategoryList()
+        {
+            var categoryList = new Func<Task<IEnumerable<Category>>>(CategoryListAsync);
+            var asyncResult = categoryList.BeginInvoke(null, null);
+            asyncResult.AsyncWaitHandle.WaitOne();
+            var categoriesResult = categoryList.EndInvoke(asyncResult);
+
+            return categoriesResult.Result;
         }
 
         private bool ValidateSave()
