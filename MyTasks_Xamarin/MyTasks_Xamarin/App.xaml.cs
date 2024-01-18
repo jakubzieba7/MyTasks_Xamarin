@@ -17,7 +17,8 @@ namespace MyTasks_Xamarin
             //DependencyService.Register<CategoryService>();
             DependencyService.Register<TaskSqliteService>();
             DependencyService.Register<CategorySqliteService>();
-            MainPage = new AppShell();
+            //MainPage = new AppShell();
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()
