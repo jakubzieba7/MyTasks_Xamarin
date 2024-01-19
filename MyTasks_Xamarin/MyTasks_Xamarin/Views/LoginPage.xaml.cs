@@ -16,7 +16,7 @@ namespace MyTasks_Xamarin.Views
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            //Navigation.PushAsync(new RegisterPage());
+            Navigation.PushAsync(new RegistrationPage());
         }
 
         private void Button_Clicked(object sender, EventArgs e)

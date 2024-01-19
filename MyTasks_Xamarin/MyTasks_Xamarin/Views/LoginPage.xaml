@@ -6,6 +6,7 @@
              mc:Ignorable="d"
              x:Class="MyTasks_Xamarin.Views.LoginPage"
              Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Disabled"
              BackgroundColor="#112B47">
     <ContentPage.Content>
         <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
