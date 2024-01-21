@@ -19,7 +19,8 @@
                     BackgroundColor="Transparent"
                     BorderColor="ForestGreen"
                     BorderWidth="1.5"
-                    CornerRadius="50"/>
+                    CornerRadius="50"
+                    Clicked="Button_Clicked"/>
 
             <Button Text="Cancel"
                    x:Name="CancelBtn"
@@ -27,7 +28,13 @@
                     BackgroundColor="Transparent"
                     BorderColor="ForestGreen"
                     BorderWidth="1.5"
-                    CornerRadius="50"/>
+                    CornerRadius="50"
+                    Clicked="Button_Clicked">
+                <Button.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Tapped="TapGestureRecognizer_Tapped"/>
+                </Button.GestureRecognizers>
+            </Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
