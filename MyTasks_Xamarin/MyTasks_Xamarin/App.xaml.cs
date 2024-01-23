@@ -15,6 +15,7 @@ namespace MyTasks_Xamarin
 
             DependencyService.Register<TaskService>();
             DependencyService.Register<CategoryService>();
+            DependencyService.Register<RegistrationService>();
             //DependencyService.Register<TaskSqliteService>();
             //DependencyService.Register<CategorySqliteService>();
             //MainPage = new AppShell();

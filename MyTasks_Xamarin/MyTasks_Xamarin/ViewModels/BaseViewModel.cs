@@ -14,6 +14,7 @@ namespace MyTasks_Xamarin.ViewModels
     {
         public ITaskService TaskService => DependencyService.Get<ITaskService>();
         public ICategoryService CategoryService => DependencyService.Get<ICategoryService>();
+        public IRegistrationService RegistrationService => DependencyService.Get<IRegistrationService>();
 
         bool isBusy = false;
         public bool IsBusy

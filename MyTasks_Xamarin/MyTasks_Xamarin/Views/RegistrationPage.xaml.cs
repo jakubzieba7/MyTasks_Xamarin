@@ -1,6 +1,6 @@
 ﻿using MyTasks_Xamarin.Services;
+using MyTasks_Xamarin.ViewModels;
 using System;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,16 +10,25 @@ namespace MyTasks_Xamarin.Views
     public partial class RegistrationPage : ContentPage
     {
         RegistrationService registrationService = new RegistrationService();
+        private RegistrationViewModel _viewModel;
+
         public RegistrationPage()
         {
             InitializeComponent();
+            BindingContext = _viewModel = new RegistrationViewModel();
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+        private async void ButtonCancel_Clicked(object sender, EventArgs e)
         {
-            var response = await registrationService.RegisterUserAsync(txtUsername.Text, txtEmail.Text, txtPassword.Text, txtConfirmPassword.Text);
+            Application.Current.MainPage = new AppShell();
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
 
-            if (response)
+        private async void ButtonRegister_Clicked(object sender, EventArgs e)
+        {
+            var response = await registrationService.RegisterUserAsync(_viewModel);
+
+            if (response.IsSuccess)
             {
 
                 await DisplayAlert("Alert", "Registration successful", "OK");
@@ -31,12 +40,6 @@ namespace MyTasks_Xamarin.Views
             {
                 await DisplayAlert("Alert", "Registration Failed!. Please try again.", "OK");
             }
-        }
-
-        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            Application.Current.MainPage = new AppShell();
-            await Shell.Current.GoToAsync("//LoginPage");
         }
     }
 }

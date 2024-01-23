@@ -1,42 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using MyTasks_WebAPI.Core.Response;
+using MyTasks_Xamarin.ViewModels;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyTasks_Xamarin.Services
 {
     public class RegistrationService : IRegistrationService
     {
-        private readonly string _url = "https://10.0.2.2:7067/";
+        private static readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri(App.BackendUrl) };
 
-        public async Task<bool> RegisterUserAsync(string password, string passwordConfirmed, string email, string username)
+        public async Task<Response> RegisterUserAsync(RegistrationViewModel model)
         {
-            var resp = false;
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-            await Task.Run(() =>
+            using (var response = await _httpClient.PostAsync("Authenticate", stringContent))
             {
-                var httpClient = new HttpClient();
-                var model = new ViewModels.RegistrationViewModel
-                {
-                    UserName = username,
-                    Password = password,
-                    Email = email,
-                    PasswordConfirmed = passwordConfirmed,
-                };
+                var responseContent = await response.Content.ReadAsStringAsync();
 
-                var json = JsonConvert.SerializeObject(model);
-                HttpContent httpContent = new StringContent(json);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                var response = httpClient.PostAsync(_url + "api/Authentication/Register", httpContent);
-                var result = response.GetAwaiter().GetResult();
-
-                if (response.Result.IsSuccessStatusCode)
-                    resp = true;
-            });
-
-            return resp;
+                return JsonConvert.DeserializeObject<Response>(responseContent);
+            }
         }
     }
 }

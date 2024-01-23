@@ -8,10 +8,11 @@
              BackgroundColor="#112B47">
     <ContentPage.Content>
         <StackLayout Spacing="12" Margin="50,15">
-            <Entry x:Name="txtUsername" Placeholder="Username" TextColor="White" PlaceholderColor="Gray"></Entry>
-            <Entry x:Name="txtEmail" Placeholder="Email" TextColor="White" PlaceholderColor="Gray"></Entry>
-            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
-            <Entry x:Name="txtConfirmPassword" Placeholder="ConfirmPassword" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtUserName" Placeholder="Username" Text="{Binding UserName, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtEmail" Placeholder="Email" Text="{Binding Email, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtUserRole" Placeholder="Admin or User" Text="{Binding UserRole, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" Text="{Binding Password, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtConfirmPassword" Placeholder="ConfirmPassword" IsPassword="True" Text="{Binding PasswordConfirmed, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
 
             <Button Text="Register"
                     VerticalOptions="Center" 
@@ -20,7 +21,7 @@
                     BorderColor="ForestGreen"
                     BorderWidth="1.5"
                     CornerRadius="50"
-                    Clicked="Button_Clicked"/>
+                    Clicked="ButtonRegister_Clicked"/>
 
             <Button Text="Cancel"
                    x:Name="CancelBtn"
@@ -29,12 +30,7 @@
                     BorderColor="ForestGreen"
                     BorderWidth="1.5"
                     CornerRadius="50"
-                    Clicked="Button_Clicked">
-                <Button.GestureRecognizers>
-                    <TapGestureRecognizer
-                        Tapped="TapGestureRecognizer_Tapped"/>
-                </Button.GestureRecognizers>
-            </Button>
+                    Clicked="ButtonCancel_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
