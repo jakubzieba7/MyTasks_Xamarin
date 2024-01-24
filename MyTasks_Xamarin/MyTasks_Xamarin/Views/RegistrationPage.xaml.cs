@@ -9,12 +9,18 @@ namespace MyTasks_Xamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RegistrationPage : ContentPage
     {
-        RegistrationService registrationService = new RegistrationService();
         private RegistrationViewModel _viewModel;
+        private RegistrationService _registrationService;
 
         public RegistrationPage()
         {
             InitializeComponent();
+            BindingContext = _viewModel = new RegistrationViewModel();
+        }
+        public RegistrationPage(RegistrationService registrationService)
+        {
+            InitializeComponent();
+            _registrationService = registrationService;
             BindingContext = _viewModel = new RegistrationViewModel();
         }
 
@@ -26,7 +32,7 @@ namespace MyTasks_Xamarin.Views
 
         private async void ButtonRegister_Clicked(object sender, EventArgs e)
         {
-            var response = await registrationService.RegisterUserAsync(_viewModel);
+            var response = await _registrationService.RegisterUserAsync(_viewModel);
 
             if (response.IsSuccess)
             {
@@ -38,7 +44,7 @@ namespace MyTasks_Xamarin.Views
             }
             else
             {
-                await DisplayAlert("Alert", "Registration Failed!. Please try again.", "OK");
+                await DisplayAlert("Alert", "Registration Failed! Please try again.", "OK");
             }
         }
     }
