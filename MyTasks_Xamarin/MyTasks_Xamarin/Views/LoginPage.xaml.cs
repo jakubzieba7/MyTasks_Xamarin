@@ -8,10 +8,12 @@ namespace MyTasks_Xamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        private LoginViewModel _viewModel;
+
         public LoginPage()
         {
             InitializeComponent();
-            this.BindingContext = new LoginViewModel();
+            this.BindingContext = _viewModel = new LoginViewModel();
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
@@ -19,15 +21,15 @@ namespace MyTasks_Xamarin.Views
             Navigation.PushAsync(new RegistrationPage());
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            if (txtUsername.Text == "" && txtPassword.Text == "")
+            if (_viewModel.UserName == "qqq" && _viewModel.Password == "aaa")
             {
                 Application.Current.MainPage = new AppShell();
-                Shell.Current.GoToAsync("//ItemsPage");
+                await Shell.Current.GoToAsync("//ItemsPage");
             }
             else
-                DisplayAlert("Ops...", "Username or Password is incorrect!", "Ok");
+                await DisplayAlert("Ops...", "Username or Password is incorrect!", "Ok");
         }
     }
 }

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:MyTasks_Xamarin.ViewModels" x:DataType="viewmodels:LoginViewModel"
              mc:Ignorable="d"
              x:Class="MyTasks_Xamarin.Views.LoginPage"
              Shell.NavBarIsVisible="False"
@@ -11,8 +11,8 @@
     <ContentPage.Content>
         <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
 
-            <Entry x:Name="txtUsername" Placeholder="Username" TextColor="White" PlaceholderColor="Gray"></Entry>
-            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtUsername" Placeholder="Username" Text="{Binding UserName, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" Text="{Binding Password, Mode=TwoWay}" TextColor="White" PlaceholderColor="Gray"></Entry>
             
             <Button 
                 VerticalOptions="Center" 

@@ -9,18 +9,12 @@ namespace MyTasks_Xamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RegistrationPage : ContentPage
     {
+        RegistrationService _registrationService = new RegistrationService();
         private RegistrationViewModel _viewModel;
-        private RegistrationService _registrationService;
 
         public RegistrationPage()
         {
             InitializeComponent();
-            BindingContext = _viewModel = new RegistrationViewModel();
-        }
-        public RegistrationPage(RegistrationService registrationService)
-        {
-            InitializeComponent();
-            _registrationService = registrationService;
             BindingContext = _viewModel = new RegistrationViewModel();
         }
 
