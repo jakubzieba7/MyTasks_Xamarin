@@ -1,14 +1,17 @@
-﻿using MyTasks_Xamarin.Views;
+﻿using MyTasks_Xamarin.Services;
+using MyTasks_Xamarin.Views;
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Xamarin.Forms;
 
 namespace MyTasks_Xamarin.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private LoginService _loginService = new LoginService();
+        private TokenService _tokenService = new TokenService();
+        private string _userName;
+        private string _password;
+
         public Command LoginCommand { get; }
 
         public LoginViewModel()
@@ -26,17 +29,19 @@ namespace MyTasks_Xamarin.ViewModels
                 Password = Password,
             };
 
-            var response = await LoginService.LoginAsync(model);
+            var response = await _loginService.LoginAsync(model);
 
             if (!response.IsSuccess)
+                await ShowErrorAlert(response);
+
+            var responseToken = await _tokenService.GetAccessTokenAsync(UserName, Password);
+
+            if (!responseToken.IsSuccessStatusCode)
                 await ShowErrorAlert(response);
 
             // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
             await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
         }
-
-        private string _userName;
-        private string _password;
 
         private bool ValidateSave()
         {

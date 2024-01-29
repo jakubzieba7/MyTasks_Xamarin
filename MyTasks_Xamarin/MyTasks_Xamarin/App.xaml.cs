@@ -13,12 +13,12 @@ namespace MyTasks_Xamarin
         {
             InitializeComponent();
 
-            //DependencyService.Register<TaskService>();
-            //DependencyService.Register<CategoryService>();
-            //DependencyService.Register<RegistrationService>();
-            //DependencyService.Register<LoginService>();
-            DependencyService.Register<TaskSqliteService>();
-            DependencyService.Register<CategorySqliteService>();
+            DependencyService.Register<TaskService>();
+            DependencyService.Register<CategoryService>();
+            DependencyService.Register<RegistrationService>();
+            DependencyService.Register<LoginService>();
+            //DependencyService.Register<TaskSqliteService>();
+            //DependencyService.Register<CategorySqliteService>();
             //MainPage = new AppShell();
             MainPage = new NavigationPage(new LoginPage());
         }

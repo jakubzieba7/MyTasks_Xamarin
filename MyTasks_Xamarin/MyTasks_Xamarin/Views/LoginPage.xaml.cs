@@ -1,4 +1,5 @@
-﻿using MyTasks_Xamarin.ViewModels;
+﻿using MyTasks_Xamarin.Services;
+using MyTasks_Xamarin.ViewModels;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -23,10 +24,11 @@ namespace MyTasks_Xamarin.Views
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            if (_viewModel.UserName == "qqq" && _viewModel.Password == "aaa")
+            if (_viewModel.UserName == "username" && _viewModel.Password == "password")
             {
                 Application.Current.MainPage = new AppShell();
-                await Shell.Current.GoToAsync("//ItemsPage");
+                await Shell.Current.GoToAsync("//AboutPage");
+                //await Shell.Current.GoToAsync("//ItemsPage");
             }
             else
                 await DisplayAlert("Ops...", "Username or Password is incorrect!", "Ok");
