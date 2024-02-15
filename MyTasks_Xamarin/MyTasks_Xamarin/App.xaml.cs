@@ -27,6 +27,8 @@ namespace MyTasks_Xamarin
             MainPage = new NavigationPage(new LoginPage());
             //HttpClient = httpClient;
 
+            var accessToken = Preferences.Get("AccessToken", "default_value");
+
             switch (Device.RuntimePlatform)
             {
                 case Device.Android:
@@ -37,6 +39,8 @@ namespace MyTasks_Xamarin
                     HttpClient = new HttpClient(new HttpClientHandler()) { BaseAddress = new Uri(App.BackendUrl) };
                     break;
             }
+
+            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
         }
 
         protected override void OnStart()

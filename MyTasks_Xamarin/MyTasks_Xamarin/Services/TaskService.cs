@@ -2,7 +2,6 @@
 using MyTasks_WebAPI.Core.DTOs;
 using MyTasks_WebAPI.Core.Response;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -12,13 +11,11 @@ namespace MyTasks_Xamarin.Services
 {
     public class TaskService : ITaskService
     {
-        private static readonly HttpClient _httpClient = new HttpClient { BaseAddress = new Uri(App.BackendUrl) };
-
         public async Task<DataResponse<int>> AddTaskAsync(TaskDto task)
         {
             var stringContent = new StringContent(JsonConvert.SerializeObject(task), Encoding.UTF8, "application/json");
 
-            using (var response = await _httpClient.PostAsync("task", stringContent))
+            using (var response = await App.HttpClient.PostAsync("task", stringContent))
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -30,7 +27,7 @@ namespace MyTasks_Xamarin.Services
         {
             var stringContent = new StringContent(JsonConvert.SerializeObject(task), Encoding.UTF8, "application/json");
 
-            using (var response = await _httpClient.PutAsync("task", stringContent))
+            using (var response = await App.HttpClient.PutAsync("task", stringContent))
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -40,7 +37,7 @@ namespace MyTasks_Xamarin.Services
 
         public async Task<Response> DeleteTaskAsync(int id)
         {
-            using (var response = await _httpClient.DeleteAsync($"task/{id}"))
+            using (var response = await App.HttpClient.DeleteAsync($"task/{id}"))
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -50,21 +47,21 @@ namespace MyTasks_Xamarin.Services
 
         public async Task<DataResponse<TaskDto>> GetTaskAsync(int id)
         {
-            var json = await _httpClient.GetStringAsync($"task/{id}");
+            var json = await App.HttpClient.GetStringAsync($"task/{id}");
 
             return JsonConvert.DeserializeObject<DataResponse<TaskDto>>(json);
         }
 
         public async Task<DataResponse<IEnumerable<TaskDto>>> GetTasksAsync()
         {
-            var json = await _httpClient.GetStringAsync("task/");
+            var json = await App.HttpClient.GetStringAsync("task/");
 
             return JsonConvert.DeserializeObject<DataResponse<IEnumerable<TaskDto>>>(json);
         }
 
         public async Task<DataResponse<IEnumerable<TaskDto>>> GetTasksAsync(PaginationFilter paginationFilter)
         {
-            var json = await _httpClient.GetStringAsync($"Task?PageNumber={paginationFilter.PageNumber}&PageSize={paginationFilter.PageSize}");
+            var json = await App.HttpClient.GetStringAsync($"Task?PageNumber={paginationFilter.PageNumber}&PageSize={paginationFilter.PageSize}");
 
             return JsonConvert.DeserializeObject<DataResponse<IEnumerable<TaskDto>>>(json);
         }
