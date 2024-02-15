@@ -1,47 +1,34 @@
 ﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Xamarin.Essentials;
-using Microsoft.CSharp;
 using MyTasks_WebAPI.Core.Response;
+using MyTasks_Xamarin.ViewModels;
 
 namespace MyTasks_Xamarin.Services
 {
     public class TokenService
     {
-        public async Task<HttpResponseMessage> GetAccessTokenAsync(string username, string password)
+        public async Task<Response> GetAccessTokenAsync(LoginViewModel model)
         {
-            var keyValues = new List<KeyValuePair<string, string>>
+            var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            using (var response = await App.HttpClient.PostAsync("Authenticate/Login", stringContent))
             {
-                new KeyValuePair<string, string>("username",username),
-                new KeyValuePair<string, string>("password",password)
-            };
+                var responseContent = await response.Content.ReadAsStringAsync();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, App.BackendUrl + "login");
+                JObject jdynamic = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                var bearer_JWT = jdynamic.Value<string>("bearer_JWT");
 
-            request.Content = new FormUrlEncodedContent(keyValues);
+                Debug.WriteLine(responseContent);
 
-            var client = new HttpClient();
-            var response = await client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
+                Preferences.Set("AccessToken", bearer_JWT);
 
-            JObject jdynamic = JsonConvert.DeserializeObject<dynamic>(content);
-            var accessToken = jdynamic.Value<string>("access_token");
-            var refreshToken = jdynamic.Value<string>("refresh_token");
-            var accessTokenExpiration = jdynamic.Value<DateTime>(".expires");
-
-            Debug.WriteLine(content);
-
-            Preferences.Set("AccessToken", accessToken);
-            Preferences.Set("RefreshToken", refreshToken);
-            Preferences.Set("AccessTokenExpiration", accessTokenExpiration);
-
-            return response;
+                return JsonConvert.DeserializeObject<Response>(responseContent);
+            }
         }
     }
 }

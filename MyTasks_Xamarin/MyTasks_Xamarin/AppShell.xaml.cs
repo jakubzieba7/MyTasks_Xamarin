@@ -14,6 +14,7 @@ namespace MyTasks_Xamarin
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
             Routing.RegisterRoute(nameof(NewCategoryPage), typeof(NewCategoryPage));
+            Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
         }
 
     }

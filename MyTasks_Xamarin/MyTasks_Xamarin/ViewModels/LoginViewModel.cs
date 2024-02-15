@@ -34,12 +34,14 @@ namespace MyTasks_Xamarin.ViewModels
             if (!response.IsSuccess)
                 await ShowErrorAlert(response);
 
-            var responseToken = await _tokenService.GetAccessTokenAsync(UserName, Password);
+            var responseToken = await _tokenService.GetAccessTokenAsync(model);
 
-            if (!responseToken.IsSuccessStatusCode)
+            if (!responseToken.IsSuccess)
                 await ShowErrorAlert(response);
 
             // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
+            //await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+            Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
         }
 

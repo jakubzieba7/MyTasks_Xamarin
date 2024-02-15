@@ -17,7 +17,7 @@ namespace MyTasks_Xamarin.Services
         {
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-            using (var response = await _httpClient.PostAsync("authenticate", stringContent))
+            using (var response = await App.HttpClient.PostAsync("Authenticate/Login", stringContent))
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
 

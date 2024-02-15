@@ -1,14 +1,18 @@
 ﻿using MyTasks_Xamarin.Services;
 using MyTasks_Xamarin.Views;
 using System;
+using System.Net.Http;
+using System.Net;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MyTasks_Xamarin
 {
     public partial class App : Application
     {
-        public static string BackendUrl = "http://10.0.2.2:88/api/";
+        public static string BackendUrl = DeviceInfo.Platform == DevicePlatform.Android? "https://10.0.2.2:88/api/" : "https://localhost:88/api/";
+        public static HttpClient HttpClient;
+
         public App()
         {
             InitializeComponent();
@@ -21,6 +25,18 @@ namespace MyTasks_Xamarin
             //DependencyService.Register<CategorySqliteService>();
             //MainPage = new AppShell();
             MainPage = new NavigationPage(new LoginPage());
+            //HttpClient = httpClient;
+
+            switch (Device.RuntimePlatform)
+            {
+                case Device.Android:
+                    HttpClient = new HttpClient(DependencyService.Get<IHTTPClientHandlerCreationService>().GetInsecureHandler()) { BaseAddress = new Uri(BackendUrl) };
+                    break;
+                default:
+                    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                    HttpClient = new HttpClient(new HttpClientHandler()) { BaseAddress = new Uri(App.BackendUrl) };
+                    break;
+            }
         }
 
         protected override void OnStart()
