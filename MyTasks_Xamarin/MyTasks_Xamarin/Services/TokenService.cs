@@ -22,10 +22,14 @@ namespace MyTasks_Xamarin.Services
 
                 JObject jdynamic = JsonConvert.DeserializeObject<dynamic>(responseContent);
                 var bearer_JWT = jdynamic.Value<string>("bearer_JWT");
+                var userId = jdynamic.Value<JObject>("user").Value<string>("id");
+                //var user = (JObject)jdynamic["user"];     //also works
+                //var userId = user["id"].ToString();
 
                 Debug.WriteLine(responseContent);
 
                 Preferences.Set("AccessToken", bearer_JWT);
+                Preferences.Set("UserId", userId);
 
                 return JsonConvert.DeserializeObject<Response>(responseContent);
             }

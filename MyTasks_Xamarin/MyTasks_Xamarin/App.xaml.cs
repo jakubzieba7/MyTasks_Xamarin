@@ -12,6 +12,7 @@ namespace MyTasks_Xamarin
     {
         public static string BackendUrl = DeviceInfo.Platform == DevicePlatform.Android? "https://10.0.2.2:88/api/" : "https://localhost:88/api/";
         public static HttpClient HttpClient;
+        public static string UserId;
 
         public App()
         {
@@ -28,6 +29,7 @@ namespace MyTasks_Xamarin
             //HttpClient = httpClient;
 
             var accessToken = Preferences.Get("AccessToken", "default_value");
+            UserId = Preferences.Get("UserId", "default_value");
 
             switch (Device.RuntimePlatform)
             {

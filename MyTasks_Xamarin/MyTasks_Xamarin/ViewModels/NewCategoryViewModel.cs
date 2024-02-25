@@ -43,7 +43,8 @@ namespace MyTasks_Xamarin.ViewModels
         {
             var category = new CategoryDto()
             {
-                Name=Name,
+                Name = Name,
+                UserId = App.UserId,
             };
 
             var response = await CategoryService.AddCategoryAsync(category);

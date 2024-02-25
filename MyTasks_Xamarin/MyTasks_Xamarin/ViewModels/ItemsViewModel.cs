@@ -1,9 +1,12 @@
 ﻿using MyTasks_WebAPI.Core;
 using MyTasks_WebAPI.Core.DTOs;
+using MyTasks_WebAPI.Core.Response;
 using MyTasks_Xamarin.Services;
 using MyTasks_Xamarin.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -40,21 +43,22 @@ namespace MyTasks_Xamarin.ViewModels
             FirstPageCommand = new Command(async () => await OnFirstPage());
             PreviousPageCommand = new Command(async () => await OnPreviousPage(), CanPreviousPage);
             NextPageCommand = new Command(async () => await OnNextPage(), CanNextPage);
+            //NextPageCommand = new Command(async () => await OnNextPage(), CanNextPageSQLite);
             LastPageCommand = new Command(async () => await OnLastPage());
+            //LastPageCommand = new Command(async () => await OnLastPageSQLite());
         }
 
         private async Task<bool> CanNextPageAsync()
         {
             var totalRecords = await TaskSqliteService.UnitOfWork.TaskRepository.TaskCount();
-
-            var totalPages = ((double)totalRecords / (double)_paginationFilter.PageSize);
+            var totalPages = (double)totalRecords / (double)_paginationFilter.PageSize;
             var roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
 
             return _paginationFilter.PageNumber < roundedTotalPages;
         }
 
 
-        private bool CanNextPage()
+        private bool CanNextPageSQLite()
         {
             var nextPageCaller = new Func<Task<bool>>(CanNextPageAsync);
             var asyncResult = nextPageCaller.BeginInvoke(null, null);
@@ -64,22 +68,47 @@ namespace MyTasks_Xamarin.ViewModels
             return nextPageResult.Result;
         }
 
+        private bool CanNextPage()
+        {
+            var totalRecords = TaskList().Data.Count();
+            var totalPages = (double)totalRecords / (double)_paginationFilter.PageSize;
+            var roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
+            return _paginationFilter.PageNumber < roundedTotalPages;
+        }
+
         private bool CanPreviousPage()
         {
             return _paginationFilter.PageNumber > 1;
         }
 
+        private async Task<DataResponse<IEnumerable<TaskDto>>> TaskListAsync()
+        {
+            var taskList = await TaskService.GetTasksAsync();
+
+            return taskList;
+        }
+
+        private DataResponse<IEnumerable<TaskDto>> TaskList()
+        {
+            var taskList = new Func<Task<DataResponse<IEnumerable<TaskDto>>>>(TaskListAsync);
+            var asyncResult = taskList.BeginInvoke(null, null);
+            asyncResult.AsyncWaitHandle.WaitOne();
+            var categoriesResult = taskList.EndInvoke(asyncResult);
+
+            return categoriesResult.Result;
+        }
+
         private async Task<int> LastPageAsync()
         {
             var totalRecords = await TaskSqliteService.UnitOfWork.TaskRepository.TaskCount();
-
-            var totalPages = ((double)totalRecords / (double)_paginationFilter.PageSize);
+            var totalPages = (double)totalRecords / (double)_paginationFilter.PageSize;
             var roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
 
             return roundedTotalPages;
         }
 
-        private async Task OnLastPage()
+        private async Task OnLastPageSQLite()
         {
             var lastPageCaller = new Func<Task<int>>(LastPageAsync);
             var asyncResult = lastPageCaller.BeginInvoke(null, null);
@@ -87,6 +116,17 @@ namespace MyTasks_Xamarin.ViewModels
             var lastPageResult = lastPageCaller.EndInvoke(asyncResult);
 
             _paginationFilter.PageNumber = lastPageResult.Result;
+
+            await ExecuteLoadItemsCommand();
+        }
+
+        private async Task OnLastPage()
+        {
+            var totalRecords = TaskList().Data.Count();
+            var totalPages = (double)totalRecords / (double)_paginationFilter.PageSize;
+            var roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
+            _paginationFilter.PageNumber = roundedTotalPages;
 
             await ExecuteLoadItemsCommand();
         }
